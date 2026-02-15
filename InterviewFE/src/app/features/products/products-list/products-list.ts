@@ -46,6 +46,7 @@ export class ProductsList {
 
   columns: ColDef[] = [
     {field: 'name', sortable: true, filter: true, flex: 2, ...this.textContainsOnly, cellRenderer: (params: any) => {
+        if (!params.data) return '';
         return `<span data-action="redirect" class="w-100 h-100 c-pointer">${params.value}</span>`;
       }
     },
@@ -53,10 +54,12 @@ export class ProductsList {
     {field: 'quantityInStock', headerName: 'Stock', sortable: true, flex: 1, ...this.numberGreaterLess},
     {field: 'category', sortable: true, filter: true, flex: 1, ...this.textContainsOnly,
       cellRenderer: (params: any) => {
+        if (!params.data) return '';
         return `<span class="w-100 h-100 c-pointer">${getCategoryLabel(params.value)}</span>`;
       }
     },
-    {headerName: 'Actions', flex: 2, sortable: false, cellRenderer: () => {
+    {headerName: 'Actions', flex: 2, sortable: false, cellRenderer: (params: any) => {
+        if (!params.data) return '';
         return `
           <button class="btn btn-sm fw-bold btn-info me-2" data-action="redirect">
             <i class="fa-solid fa-info me-1"></i>
@@ -93,13 +96,17 @@ export class ProductsList {
         const sortModel = rowParams.sortModel;
         const filterModel = rowParams.filterModel;
 
+        this.loadingStore.show();
+
         this.productsService.getPaged(page, pageSize, sortModel, filterModel)
           .subscribe({
             next: (res) => {
               rowParams.successCallback(res.content, res.totalElements);
+              this.loadingStore.hide();
             },
             error: () => {
               rowParams.failCallback()
+              this.loadingStore.hide();
               this.toastStore.error('Load Failed', 'Unable to load products. Please refresh the page.');
             }
           });
