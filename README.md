@@ -1,5 +1,3 @@
-\# Interview Assignment – Products App
-
 ## Prerequisites
 - Java 21
 - Node.js + npm
