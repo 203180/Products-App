@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/InterwayInterview
     username: postgres
-    password: bitola12
+    password: postgres
   jpa:
     hibernate:
       ddl-auto: update
