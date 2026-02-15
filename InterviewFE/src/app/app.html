@@ -1,0 +1,7 @@
+<div class="vh-100 p-4">
+  <app-toast-host/>
+  <router-outlet></router-outlet>
+</div>
+@if (loading$ | async) {
+  <app-loader/>
+}

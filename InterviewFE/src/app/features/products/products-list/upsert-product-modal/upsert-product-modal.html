@@ -1,0 +1,98 @@
+<app-reusable-modal
+  [visible]="visible"
+  [title]="title"
+  size="md"
+  (closed)="close()"
+>
+  <form id="upsert-modal-form" [formGroup]="form" (ngSubmit)="save()">
+
+    <div class="mb-3">
+      <label class="form-label">Name *</label>
+      <input
+        type="text"
+        class="form-control"
+        [class.is-invalid]="isInvalid('name')"
+        formControlName="name"
+        placeholder="Name"
+      />
+      @if (isInvalid('name')) {
+        <div class="invalid-feedback">Name is required.</div>
+      }
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Description</label>
+      <textarea
+        class="form-control"
+        rows="3"
+        formControlName="description"
+        placeholder="Description"
+      ></textarea>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Price *</label>
+        <input
+          type="number"
+          class="form-control"
+          [class.is-invalid]="isInvalid('price')"
+          formControlName="price"
+          min="0"
+          placeholder="Price"
+        />
+        @if (isInvalid('price')) {
+          <div class="invalid-feedback">Price must be ≥ 0.</div>
+        }
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Quantity in stock *</label>
+        <input
+          type="number"
+          class="form-control"
+          [class.is-invalid]="isInvalid('quantityInStock')"
+          formControlName="quantityInStock"
+          min="0"
+          placeholder="Quantity"
+        />
+        @if (isInvalid('quantityInStock')) {
+          <div class="invalid-feedback">Quantity must be ≥ 0.</div>
+        }
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Category</label>
+      <select
+        class="form-select"
+        [ngClass]="{ 'text-white-50': !form.get('category')?.value }"
+        formControlName="category"
+      >
+        <option class="bg-dark" [value]=null>Select category...</option>
+
+        @for (c of categories; track c) {
+          <option class="bg-dark" [value]="c.value">{{ c.label }}</option>
+        }
+      </select>
+    </div>
+
+    @if (visible) {
+      <div class="mb-3">
+        <label class="form-label">Product Image</label>
+        <input type="file" class="form-control" (change)="onFileSelected($event)"/>
+      </div>
+    }
+
+    <div class="w-100 d-flex justify-content-end gap-2 mt-4">
+      <button type="button" class="btn btn-outline-light" (click)="close()">
+        Cancel
+      </button>
+
+      <button type="submit" class="btn btn-success">
+        {{ isEdit ? 'Save Changes' : 'Add Product' }}
+      </button>
+    </div>
+
+  </form>
+</app-reusable-modal>

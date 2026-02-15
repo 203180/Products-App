@@ -1,0 +1,24 @@
+<app-reusable-modal
+  [visible]="visible"
+  [title]="title"
+  [hasFooter]="true"
+  (closed)="onDismiss()"
+>
+  <p class="mb-0 text-light">{{ subtitle }}</p>
+
+  <div modalFooter class="d-flex justify-content-end gap-2">
+    <button type="button" class="btn btn-outline-light" (click)="onDismiss()">
+      {{ dismissText }}
+    </button>
+
+    <button
+      type="button"
+      class="btn"
+      [class.btn-danger]="danger"
+      [class.btn-primary]="!danger"
+      (click)="onConfirm()"
+    >
+      {{ confirmText }}
+    </button>
+  </div>
+</app-reusable-modal>
